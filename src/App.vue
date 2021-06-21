@@ -1,18 +1,28 @@
 <template>
   <div class='app__main'>
     <!-- 絞り込みラジオボタン -->
-    <!-- テーブル -->
+
+    <table>
+      <thead>
+      <tr>
+        <th class="id" scope="col">ID</th>
+        <th class="comment" scope="col">コメント</th>
+        <th class="state" scope="col">状態</th>
+        <th class="button" scope="col">-</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- [1] ここに <tr> で 要素を1行づつ繰り返し表示したい -->
+      </tbody>
+    </table>
     <!-- 新規登録フォーム -->
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
   components: {
-    HelloWorld
   },
   data() {
     return {
@@ -27,17 +37,17 @@ export default {
 // @see: https://jp.vuejs.org/v2/examples/todomvc.html
 let STORAGE_KEY = 'todos-vuejs-demo'
 let todoStorage = {
-  fetch: function() {
+  fetch: function () {
     let todos = JSON.parse(
         localStorage.getItem(STORAGE_KEY) || '[]'
     )
-    todos.forEach(function(todo, index) {
+    todos.forEach(function (todo, index) {
       todo.id = index
     })
     todoStorage.uid = todos.length
     return todos
   },
-  save: function(todos) {
+  save: function (todos) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
   }
 }
