@@ -1,7 +1,8 @@
 <template>
   <div class='app__main'>
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- 絞り込みラジオボタン -->
+    <!-- テーブル -->
+    <!-- 新規登録フォーム -->
   </div>
 </template>
 
@@ -12,6 +13,14 @@ export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  data() {
+    return {
+      // 使用するデータ
+    }
+  },
+  methods: {
+    // 使用するメソッド
   }
 }
 
