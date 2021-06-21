@@ -16,12 +16,10 @@
                 <th scope="row">{{ item.id }}</th>
                 <td>{{ item.comment }}</td>
                 <td class="state">
-                    <!-- 状態変更ボタンのモック -->
-                    <button>{{ item.state }}</button>
+                    <button v-on:click="doChangeState(item)">{{ item.state }}</button>
                 </td>
                 <td class="button">
-                    <!-- 削除ボタンのモック -->
-                    <button>削除</button>
+                    <button v-on:click.ctrl="doRemove(item)">削除</button>
                 </td>
             </tr>
             </tbody>
@@ -47,7 +45,7 @@ export default {
     },
 
     methods: {
-        // ToDo 追加の処理
+        // タスク追加
         doAdd: function () {
             // ref で名前を付けておいた要素を参照
             let comment = this.$refs.comment
@@ -64,6 +62,15 @@ export default {
             })
             // フォーム要素を空にする
             comment.value = ''
+        },
+        // 状態変更
+        doChangeState: function (item) {
+            item.state = item.state ? 0 : 1
+        },
+        // タスク削除
+        doRemove: function (item) {
+            let index = this.todos.indexOf(item)
+            this.todos.splice(index, 1)
         },
 
         watch: {
