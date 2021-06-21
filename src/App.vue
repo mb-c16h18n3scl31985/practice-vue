@@ -12,21 +12,32 @@
       </tr>
       </thead>
       <tbody>
-      <!-- [1] ここに <tr> で 要素を1行づつ繰り返し表示したい -->
+      <tr v-for="item in todos" :key="item.id">
+        <th scope="row">{{ item.id }}</th>
+        <td>{{ item.comment }}</td>
+        <td class="state">
+          <!-- 状態変更ボタンのモック -->
+          <button>{{ item.state }}</button>
+        </td>
+        <td class="button">
+          <!-- 削除ボタンのモック -->
+          <button>削除</button>
+        </td>
+      </tr>
       </tbody>
     </table>
-    <!-- 新規登録フォーム -->
+
   </div>
 </template>
 
 <script>
 export default {
   name: 'App',
-  components: {
-  },
+  components: {},
   data() {
     return {
       // 使用するデータ
+      todos: [{id:'1',comment:'にんじん',state:'waiting'}]
     }
   },
   methods: {
