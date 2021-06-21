@@ -28,7 +28,7 @@ export default {
 
   /* 以上CSSは元々あったもの */
   /* 以下参考main.cssよりコピペ */
-  /*　@see: https://github.com/mio3io/cr-vue/blob/master/codes/tutorial-todo/main.css　*/
+
   max-width: 640px;
   margin: 0 auto;
 }
