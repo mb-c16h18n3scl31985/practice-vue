@@ -1,30 +1,33 @@
 <template>
     <div class='app__main'>
+        <h1>ToDoリスト</h1>
+
         <!-- 絞り込みラジオボタン -->
         <label v-for="(label,key) in options" :key='key'>
             <input type="radio" v-model="current" v-bind:value="label.value">{{ label.label }}
         </label>
 
+        <!-- タスク表示テーブル -->
         <table>
             <thead>
-            <tr>
-                <th class="id" scope="col">ID</th>
-                <th class="comment" scope="col">コメント</th>
-                <th class="state" scope="col">状態</th>
-                <th class="button" scope="col">-</th>
-            </tr>
+                <tr>
+                    <th class="id" scope="col">ID</th>
+                    <th class="comment" scope="col">コメント</th>
+                    <th class="state" scope="col">状態</th>
+                    <th class="button" scope="col">-</th>
+                </tr>
             </thead>
             <tbody>
-            <tr v-for="item in computedTodos" :key="item.id">
-                <th scope="row">{{ item.id }}</th>
-                <td>{{ item.comment }}</td>
-                <td class="state">
-                    <button v-on:click="doChangeState(item)">{{ labels[item.state] }}</button>
-                </td>
-                <td class="button">
-                    <button v-on:click.ctrl="doRemove(item)">削除</button>
-                </td>
-            </tr>
+                <tr v-for="item in computedTodos" :key="item.id">
+                    <th scope="row">{{ item.id }}</th>
+                    <td>{{ item.comment }}</td>
+                    <td class="state">
+                        <button @click="doChangeState(item)">{{ labels[item.state] }}</button>
+                    </td>
+                    <td class="button">
+                        <button @click.ctrl="doRemove(item)">削除</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
@@ -40,9 +43,9 @@
 <script>
 export default {
     name: 'App',
-    components: {},
     data() {
         return {
+            // 空のオブジェクトを用意
             todos: [],
 
             // 選択している options の value を記憶するためのデータ
@@ -87,8 +90,11 @@ export default {
         },
     },
 
+    // ウォッチャ
+    // @see: https://jp.vuejs.org/v2/guide/computed.html
+    // データの変更に応じ、非同期やコストの高い処理を実行したいとき有用
+    // オプションを使う場合はオブジェクト形式にする
     watch: {
-        // オプションを使う場合はオブジェクト形式にする
         todos: {
             // 引数はウォッチしているプロパティの変更後の値
             handler: function (todos) {
@@ -99,15 +105,19 @@ export default {
         }
     },
 
+    // Vueインスタンス生成時の処理
     created() {
         // インスタンス作成時に自動的に fetch() する
         this.todos = todoStorage.fetch()
     },
 
+    // 算出プロパティ
+    // データから別の新しいデータを作成する関数型のデータ
+    // @see: https://jp.vuejs.org/v2/guide/computed.html
     computed: {
         labels() {
-            return this.options.reduce(function(a, b) {
-                return Object.assign(a, { [b.value]: b.label })
+            return this.options.reduce(function (a, b) {
+                return Object.assign(a, {[b.value]: b.label})
             }, {})
             // キーから見つけやすいように、次のように加工したデータを作成
             // {0: '作業中', 1: '完了', -1: 'すべて'}
