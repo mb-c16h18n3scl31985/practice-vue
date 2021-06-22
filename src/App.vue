@@ -1,6 +1,9 @@
 <template>
     <div class='app__main'>
         <!-- 絞り込みラジオボタン -->
+        <label v-for="(label,key) in options" :key='key'>
+            <input type="radio" v-model="current" v-bind:value="label.value">{{ label.label }}
+        </label>
 
         <table>
             <thead>
@@ -40,7 +43,16 @@ export default {
     components: {},
     data() {
         return {
-            todos: []
+            todos: [],
+
+            // 選択している options の value を記憶するためのデータ
+            options: [
+                { value: -1, label: 'すべて' },
+                { value: 0,  label: '作業中' },
+                { value: 1,  label: '完了' }
+            ],
+            // 初期値を「-1」つまり「すべて」にする
+            current: -1
         }
     },
 
