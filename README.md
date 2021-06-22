@@ -1,4 +1,4 @@
-# todo
+# todoアプリの作成
 
 ## 参考 
 https://cr-vue.mio3io.com/tutorials/todo.html
@@ -25,3 +25,4 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
