@@ -15,7 +15,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="item in todos" :key="item.id">
+            <tr v-for="item in computedTodos" :key="item.id">
                 <th scope="row">{{ item.id }}</th>
                 <td>{{ item.comment }}</td>
                 <td class="state">
@@ -47,9 +47,9 @@ export default {
 
             // 選択している options の value を記憶するためのデータ
             options: [
-                { value: -1, label: 'すべて' },
-                { value: 0,  label: '作業中' },
-                { value: 1,  label: '完了' }
+                {value: -1, label: 'すべて'},
+                {value: 0, label: '作業中'},
+                {value: 1, label: '完了'}
             ],
             // 初期値を「-1」つまり「すべて」にする
             current: -1
@@ -75,6 +75,7 @@ export default {
             // フォーム要素を空にする
             comment.value = ''
         },
+
         // 状態変更
         doChangeState: function (item) {
             item.state = item.state ? 0 : 1
@@ -84,24 +85,33 @@ export default {
             let index = this.todos.indexOf(item)
             this.todos.splice(index, 1)
         },
+    },
+    watch: {
+        // オプションを使う場合はオブジェクト形式にする
+        todos: {
+            // 引数はウォッチしているプロパティの変更後の値
+            handler: function (todos) {
+                todoStorage.save(todos)
+            },
+            // deep オプションでネストしているデータも監視できる
+            deep: true
+        }
+    },
 
-        watch: {
-            // オプションを使う場合はオブジェクト形式にする
-            todos: {
-                // 引数はウォッチしているプロパティの変更後の値
-                handler: function (todos) {
-                    todoStorage.save(todos)
-                },
-                // deep オプションでネストしているデータも監視できる
-                deep: true
-            }
-        },
+    created() {
+        // インスタンス作成時に自動的に fetch() する
+        this.todos = todoStorage.fetch()
+    },
 
-        created() {
-            // インスタンス作成時に自動的に fetch() する
-            this.todos = todoStorage.fetch()
-        },
-    }
+    computed: {
+        computedTodos: function () {
+            // データ current が -1 ならすべて
+            // それ以外なら current と state が一致するものだけに絞り込む
+            return this.todos.filter(function (el) {
+                return this.current < 0 ? true : this.current === el.state
+            }, this)
+        }
+    },
 }
 
 // @see: https://jp.vuejs.org/v2/examples/todomvc.html
