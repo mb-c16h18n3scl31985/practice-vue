@@ -10,31 +10,31 @@
         <!-- タスク表示テーブル -->
         <table>
             <thead>
-                <tr>
-                    <th class="id" scope="col">ID</th>
-                    <th class="comment" scope="col">コメント</th>
-                    <th class="state" scope="col">状態</th>
-                    <th class="button" scope="col">-</th>
-                </tr>
+            <tr>
+                <th class="id" scope="col">ID</th>
+                <th class="comment" scope="col">コメント</th>
+                <th class="state" scope="col">状態</th>
+                <th class="button" scope="col">-</th>
+            </tr>
             </thead>
             <tbody>
-                <tr v-for="item in computedTodos" :key="item.id">
-                    <th scope="row">{{ item.id }}</th>
-                    <td>{{ item.comment }}</td>
-                    <td class="state">
-                        <button @click="doChangeState(item)">{{ labels[item.state] }}</button>
-                    </td>
-                    <td class="button">
-                        <button @click.ctrl="doRemove(item)">削除</button>
-                    </td>
-                </tr>
+            <tr v-for="item in computedTodos" :key="item.id">
+                <th scope="row">{{ item.id }}</th>
+                <td>{{ item.comment }}</td>
+                <td class="state">
+                    <button @click="doChangeState(item)">{{ labels[item.state] }}</button>
+                </td>
+                <td class="button">
+                    <button @click.ctrl="doRemove(item)">削除</button>
+                </td>
+            </tr>
             </tbody>
         </table>
 
         <h2>新しい作業の追加</h2>
         <form class="add-form" @submit.prevent="doAdd">
             <label for="comment">コメント</label>
-            <input id="comment" type="text" ref="comment">
+            <input id="comment" type="text" v-model="comment">
             <button type="submit">追加</button>
         </form>
     </div>
@@ -47,6 +47,9 @@ export default {
         return {
             // 空のオブジェクトを用意
             todos: [],
+
+            // コメント用の枠
+            comment: 'commentの枠',
 
             // 選択している options の value を記憶するためのデータ
             options: [
@@ -62,21 +65,19 @@ export default {
     methods: {
         // タスク追加
         doAdd: function () {
-            // ref で名前を付けておいた要素を参照
-            let comment = this.$refs.comment
             // 入力がなければ何もしないで return
-            if (!comment.value.length) {
+            if (!this.comment) {
                 return
             }
             // { 新しいID, コメント, 作業状態 }というオブジェクトを現在の todos リストへ push
             // 作業状態「state」はデフォルト「作業中=0」で作成
             this.todos.push({
                 id: todoStorage.uid++,
-                comment: comment.value,
+                comment: this.comment,
                 state: 0
             })
             // フォーム要素を空にする
-            comment.value = ''
+            this.comment = ''
         },
 
         // 状態変更
