@@ -49,7 +49,7 @@ export default {
             todos: [],
 
             // コメント用の枠
-            comment: 'commentの枠',
+            comment: '',
 
             // 選択している options の value を記憶するためのデータ
             options: [
