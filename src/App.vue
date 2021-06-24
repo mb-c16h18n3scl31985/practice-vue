@@ -8,28 +8,59 @@
         </label>
 
         <!-- タスク表示テーブル -->
-        <table>
-            <thead>
-            <tr>
-                <th class="id" scope="col">ID</th>
-                <th class="comment" scope="col">コメント</th>
-                <th class="state" scope="col">状態</th>
-                <th class="button" scope="col">-</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="item in computedTodos" :key="item.id">
-                <th scope="row">{{ item.id }}</th>
-                <td>{{ item.comment }}</td>
-                <td class="state">
-                    <button @click="doChangeState(item)">{{ labels[item.state] }}</button>
-                </td>
-                <td class="button">
-                    <button @click.ctrl="doRemove(item)">削除</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="tables">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col" colspan="4">作業中</th>
+                </tr>
+                <tr>
+                    <th class="id" scope="col">ID</th>
+                    <th class="comment" scope="col">コメント</th>
+                    <th class="state" scope="col">移動</th>
+                    <th class="button" scope="col">-</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="item in computedWorkingTodos" :key="item.id">
+                    <th scope="row">{{ item.id }}</th>
+                    <td>{{ item.comment }}</td>
+                    <td class="state">
+                        <button @click="doChangeState(item)">{{ labels[item.state] }}</button>
+                    </td>
+                    <td class="button">
+                        <button @click.ctrl="doRemove(item)">削除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col" colspan="4">完了</th>
+                </tr>
+                <tr>
+                    <th class="id" scope="col">ID</th>
+                    <th class="comment" scope="col">コメント</th>
+                    <th class="state" scope="col">移動</th>
+                    <th class="button" scope="col">-</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="item in computedCompletedTodos" :key="item.id">
+                    <th scope="row">{{ item.id }}</th>
+                    <td>{{ item.comment }}</td>
+                    <td class="state">
+                        <button @click="doChangeState(item)">{{ labels[item.state] }}</button>
+                    </td>
+                    <td class="button">
+                        <button @click.ctrl="doRemove(item)">削除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
         <h2>新しい作業の追加</h2>
         <form class="add-form" @submit.prevent="doAdd">
@@ -129,6 +160,18 @@ export default {
             return this.todos.filter(function (el) {
                 return this.current < 0 ? true : this.current === el.state
             }, this)
+        },
+        computedWorkingTodos: function () {
+            // 作業中のタスクを返却
+            return this.todos.filter(function (el) {
+                return 0 === el.state
+            }, this)
+        },
+        computedCompletedTodos: function () {
+            // 完了したタスクを返却
+            return this.todos.filter(function (el) {
+                return 1 === el.state
+            }, this)
         }
     },
 }
@@ -164,7 +207,6 @@ let todoStorage = {
     /* 以下参考main.cssよりコピペ */
     /* @see: https://github.com/mio3io/cr-vue/blob/master/codes/tutorial-todo/main.css */
 
-    max-width: 640px;
     margin: 0 auto;
 }
 
@@ -229,5 +271,15 @@ button {
     background: #0099e4;
     color: #fff;
     cursor: pointer;
+}
+
+.tables {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.tables table {
+    flex-basis: 47%;
 }
 </style>
