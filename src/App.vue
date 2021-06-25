@@ -3,63 +3,13 @@
         <h1>ToDoリスト</h1>
 
         <!-- 絞り込みラジオボタン -->
-        <label v-for="(label,key) in options" :key='key'>
-            <input type="radio" v-model="current" v-bind:value="label.value">{{ label.label }}
-        </label>
+<!--        <label v-for="(label,key) in options" :key='key'>-->
+<!--            <input type="radio" v-model="current" v-bind:value="label.value">{{ label.label }}-->
+<!--        </label>-->
 
         <!-- タスク表示テーブル -->
         <div class="tables">
-            <table>
-                <thead>
-                <tr>
-                    <th scope="col" colspan="4">作業中</th>
-                </tr>
-                <tr>
-                    <th class="id" scope="col">ID</th>
-                    <th class="comment" scope="col">コメント</th>
-                    <th class="state" scope="col">移動</th>
-                    <th class="button" scope="col">-</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="item in computedWorkingTodos" :key="item.id">
-                    <th scope="row">{{ item.id }}</th>
-                    <td>{{ item.comment }}</td>
-                    <td class="state">
-                        <button @click="doChangeState(item)">完了した</button>
-                    </td>
-                    <td class="button">
-                        <button @click.ctrl="doRemove(item)">削除</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <table>
-                <thead>
-                <tr>
-                    <th scope="col" colspan="4">完了</th>
-                </tr>
-                <tr>
-                    <th class="id" scope="col">ID</th>
-                    <th class="comment" scope="col">コメント</th>
-                    <th class="state" scope="col">移動</th>
-                    <th class="button" scope="col">-</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="item in computedCompletedTodos" :key="item.id">
-                    <th scope="row">{{ item.id }}</th>
-                    <td>{{ item.comment }}</td>
-                    <td class="state">
-                        <button @click="doChangeState(item)">まだ終わってない</button>
-                    </td>
-                    <td class="button">
-                        <button @click.ctrl="doRemove(item)">削除</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <TodoTables :todos="todos"></TodoTables>
         </div>
 
         <h2>新しい作業の追加</h2>
@@ -72,8 +22,13 @@
 </template>
 
 <script>
+import TodoTables from "./components/TodoTables";
+
 export default {
     name: 'App',
+    components:{
+        TodoTables
+    },
     data() {
         return {
             // 空のオブジェクトを用意
@@ -108,16 +63,6 @@ export default {
             // フォーム要素を空にする
             this.comment = ''
         },
-
-        // 状態変更
-        doChangeState: function (item) {
-            item.state = item.state ? 0 : 1
-        },
-        // タスク削除
-        doRemove: function (item) {
-            let index = this.todos.indexOf(item)
-            this.todos.splice(index, 1)
-        },
     },
 
     // ウォッチャ
@@ -139,24 +84,6 @@ export default {
     created() {
         // インスタンス作成時に自動的に fetch() する
         this.todos = todoStorage.fetch()
-    },
-
-    // 算出プロパティ
-    // データから別の新しいデータを作成する関数型のデータ
-    // @see: https://jp.vuejs.org/v2/guide/computed.html
-    computed: {
-        computedWorkingTodos: function () {
-            // 作業中のタスクを返却
-            return this.todos.filter(function (el) {
-                return 0 === el.state
-            }, this)
-        },
-        computedCompletedTodos: function () {
-            // 完了したタスクを返却
-            return this.todos.filter(function (el) {
-                return 1 === el.state
-            }, this)
-        }
     },
 }
 
@@ -198,65 +125,6 @@ let todoStorage = {
     box-sizing: border-box;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-thead th {
-    border-bottom: 2px solid #0099e4; /*#d31c4a */
-    color: #0099e4;
-}
-
-th,
-td {
-    padding: 0 8px;
-    line-height: 40px;
-}
-
-thead th.id {
-    width: 50px;
-}
-
-thead th.state {
-    width: 100px;
-}
-
-thead th.button {
-    width: 60px;
-}
-
-tbody td.button, tbody td.state {
-    text-align: center;
-}
-
-tbody tr td,
-tbody tr th {
-    border-bottom: 1px solid #ccc;
-    transition: all 0.4s;
-}
-
-tbody tr.done td,
-tbody tr.done th {
-    background: #f8f8f8;
-    color: #bbb;
-}
-
-tbody tr:hover td,
-tbody tr:hover th {
-    background: #f4fbff;
-}
-
-button {
-    border: none;
-    border-radius: 20px;
-    line-height: 24px;
-    padding: 0 8px;
-    background: #0099e4;
-    color: #fff;
-    cursor: pointer;
-}
-
 .tables {
     width: 100%;
     display: flex;
@@ -266,4 +134,5 @@ button {
 .tables table {
     flex-basis: 47%;
 }
+
 </style>
