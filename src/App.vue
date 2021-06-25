@@ -2,11 +2,6 @@
     <div class='app__main'>
         <h1>ToDoリスト</h1>
 
-        <!-- 絞り込みラジオボタン -->
-<!--        <label v-for="(label,key) in options" :key='key'>-->
-<!--            <input type="radio" v-model="current" v-bind:value="label.value">{{ label.label }}-->
-<!--        </label>-->
-
         <!-- タスク表示テーブル -->
         <div class="tables">
             <TodoTables :todos="todos"></TodoTables>
