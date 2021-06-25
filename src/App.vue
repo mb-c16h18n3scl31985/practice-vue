@@ -141,7 +141,7 @@ let todoStorage = {
     justify-content: space-around;
 }
 
-.tables table {
+.tables * {
     flex-basis: 47%;
 }
 

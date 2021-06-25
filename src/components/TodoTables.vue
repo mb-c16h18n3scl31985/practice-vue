@@ -1,7 +1,5 @@
 <template>
     <div>
-        <p>{{ state }}</p>
-
         <table>
             <thead>
             <tr>
@@ -36,8 +34,8 @@ export default {
         return {
             options: {
                 all: {state: -1, japanese: 'すべて'},
-                working: {state: 0, japanese: '作業中', changeState: 'completed'},
-                completed: {state: 1, japanese: '完了', changeState: 'working'}
+                working: {state: 0, japanese: '作業中'},
+                completed: {state: 1, japanese: '完了'}
             },
         }
     },
