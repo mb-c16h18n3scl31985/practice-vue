@@ -41,8 +41,8 @@ export default {
     },
 
     props: {
-        todos: Array,
-        state: String
+        todos: {type: Array, required: true},
+        state: {type: String, required: true, default: 'working'}
     },
 
     methods: {
@@ -56,7 +56,7 @@ export default {
         },
 
         // ボタン変更文句
-        changeStateWord: function (state){
+        changeStateWord: function (state) {
             if (state === 'working') {
                 return this.options.completed.japanese + 'へ移動'
             } else if (state === 'completed') {
