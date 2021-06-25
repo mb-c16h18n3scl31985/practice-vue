@@ -4,7 +4,7 @@
 
         <!-- タスク表示テーブル -->
         <div class="tables">
-            <TodoTables :todos="todos"></TodoTables>
+            <TodoTables :todos="todos" :state="state.working"></TodoTables>
         </div>
 
         <h2>新しい作業の追加</h2>
@@ -21,7 +21,7 @@ import TodoTables from "./components/TodoTables";
 
 export default {
     name: 'App',
-    components:{
+    components: {
         TodoTables
     },
     data() {
@@ -31,13 +31,10 @@ export default {
 
             // コメント用の枠
             comment: '',
-
-            // 選択している options の value を記憶するためのデータ
-            options: [
-                {value: -1, label: 'すべて'},
-                {value: 0, label: '作業中'},
-                {value: 1, label: '完了'}
-            ],
+            state: {
+                all: 'all',
+                working: 'working',
+                completed: 'completed'}
         }
     },
 

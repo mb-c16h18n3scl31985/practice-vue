@@ -1,9 +1,11 @@
 <template>
     <div>
+        <p>{{ state }}</p>
+
         <table>
             <thead>
             <tr>
-                <th scope="col" colspan="4">完了</th>
+                <th scope="col" colspan="4">{{ tableTitle(state) }}</th>
             </tr>
             <tr>
                 <th class="id" scope="col">ID</th>
@@ -17,7 +19,7 @@
                 <th scope="row">{{ item.id }}</th>
                 <td>{{ item.comment }}</td>
                 <td class="state">
-                    <button @click="doChangeState(item)">まだ終わってない</button>
+                    <button @click="doChangeState(item)">{{ changeStateWord(state) }}</button>
                 </td>
                 <td class="button">
                     <button @click.ctrl="doRemove(item)">削除</button>
@@ -31,19 +33,43 @@
 <script>
 export default {
     data() {
-        return {}
+        return {
+            options: {
+                all: {state: -1, japanese: 'すべて'},
+                working: {state: 0, japanese: '作業中', changeState: 'completed'},
+                completed: {state: 1, japanese: '完了', changeState: 'working'}
+            },
+        }
     },
 
     props: {
-        todos: Object,
-        options: Object,
+        todos: Array,
+        state: String
     },
 
     methods: {
+        // タイトルを返す
+        tableTitle: function (state) {
+            if (state === 'working') {
+                return this.options.working.japanese
+            } else if (state === 'completed') {
+                return this.options.completed.japanese
+            }
+        },
+
+        // ボタン変更文句
+        changeStateWord: function (state){
+            if (state === 'working') {
+                return '完了へ移動'
+            } else if (state === 'completed') {
+                return '実はまだ終わってない'
+            }
+        },
         // 状態変更
         doChangeState: function (item) {
             item.state = item.state ? 0 : 1
         },
+
         // タスク削除
         doRemove: function (item) {
             let index = this.todos.indexOf(item)
