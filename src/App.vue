@@ -4,7 +4,8 @@
 
         <!-- タスク表示テーブル -->
         <div class="tables">
-            <TodoTables :todos="todos" :state="state.working"></TodoTables>
+            <TodoTables :todos="computedWorkingTodos" :state="state.working"></TodoTables>
+            <TodoTables :todos="computedCompletedTodos" :state="state.completed"></TodoTables>
         </div>
 
         <h2>新しい作業の追加</h2>
@@ -76,6 +77,23 @@ export default {
     created() {
         // インスタンス作成時に自動的に fetch() する
         this.todos = todoStorage.fetch()
+    },
+    // 算出プロパティ
+    // データから別の新しいデータを作成する関数型のデータ
+    // @see: https://jp.vuejs.org/v2/guide/computed.html
+    computed: {
+        computedWorkingTodos: function () {
+            // 作業中のタスクを返却
+            return this.todos.filter(function (el) {
+                return 0 === el.state
+            }, this)
+        },
+        computedCompletedTodos: function () {
+            // 完了したタスクを返却
+            return this.todos.filter(function (el) {
+                return 1 === el.state
+            }, this)
+        }
     },
 }
 

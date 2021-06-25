@@ -15,7 +15,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="item in computedCompletedTodos" :key="item.id">
+            <tr v-for="item in todos" :key="item.id">
                 <th scope="row">{{ item.id }}</th>
                 <td>{{ item.comment }}</td>
                 <td class="state">
@@ -60,11 +60,12 @@ export default {
         // ボタン変更文句
         changeStateWord: function (state){
             if (state === 'working') {
-                return '完了へ移動'
+                return this.options.completed.japanese + 'へ移動'
             } else if (state === 'completed') {
-                return '実はまだ終わってない'
+                return this.options.working.japanese + 'へ移動'
             }
         },
+
         // 状態変更
         doChangeState: function (item) {
             item.state = item.state ? 0 : 1
@@ -77,23 +78,6 @@ export default {
         },
     },
 
-    // 算出プロパティ
-    // データから別の新しいデータを作成する関数型のデータ
-    // @see: https://jp.vuejs.org/v2/guide/computed.html
-    computed: {
-        computedWorkingTodos: function () {
-            // 作業中のタスクを返却
-            return this.todos.filter(function (el) {
-                return 0 === el.state
-            }, this)
-        },
-        computedCompletedTodos: function () {
-            // 完了したタスクを返却
-            return this.todos.filter(function (el) {
-                return 1 === el.state
-            }, this)
-        }
-    },
 }
 </script>
 
