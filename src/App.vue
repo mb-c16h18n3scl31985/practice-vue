@@ -88,8 +88,6 @@ export default {
                 {value: 0, label: '作業中'},
                 {value: 1, label: '完了'}
             ],
-            // 初期値を「-1」つまり「すべて」にする
-            current: -1
         }
     },
 
@@ -147,20 +145,6 @@ export default {
     // データから別の新しいデータを作成する関数型のデータ
     // @see: https://jp.vuejs.org/v2/guide/computed.html
     computed: {
-        // labels() {
-        //     return this.options.reduce(function (a, b) {
-        //         return Object.assign(a, {[b.value]: b.label})
-        //     }, {})
-        //     // キーから見つけやすいように、次のように加工したデータを作成
-        //     // {0: '作業中', 1: '完了', -1: 'すべて'}
-        // },
-        // computedTodos: function () {
-        //     // データ current が -1 ならすべて
-        //     // それ以外なら current と state が一致するものだけに絞り込む
-        //     return this.todos.filter(function (el) {
-        //         return this.current < 0 ? true : this.current === el.state
-        //     }, this)
-        // },
         computedWorkingTodos: function () {
             // 作業中のタスクを返却
             return this.todos.filter(function (el) {
