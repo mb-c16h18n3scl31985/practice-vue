@@ -20,7 +20,7 @@
                     <button @click="doChangeState(item)">{{ changeStateWord(state) }}</button>
                 </td>
                 <td class="button">
-                    <button @click.ctrl="doRemove(item)">削除</button>
+                    <button @click="toRemove(item)">削除</button>
                 </td>
             </tr>
             </tbody>
@@ -67,6 +67,11 @@ export default {
         // 状態変更
         doChangeState: function (item) {
             item.state = item.state ? 0 : 1
+        },
+
+        // 親のdoRemoveへ送る
+        toRemove(item){
+            this.$emit('toRemove', item)
         },
 
         // タスク削除

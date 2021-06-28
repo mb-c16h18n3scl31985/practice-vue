@@ -4,8 +4,8 @@
 
         <!-- タスク表示テーブル -->
         <div class="tables">
-            <TodoTables :todos="computedWorkingTodos" :state="state.working"></TodoTables>
-            <TodoTables :todos="computedCompletedTodos" :state="state.completed"></TodoTables>
+            <TodoTables :todos="computedWorkingTodos" :state="state.working" @toRemove="doRemove"></TodoTables>
+            <TodoTables :todos="computedCompletedTodos" :state="state.completed" @toRemove="doRemove"></TodoTables>
         </div>
 
         <h2>新しい作業の追加</h2>
@@ -55,6 +55,12 @@ export default {
             })
             // フォーム要素を空にする
             this.comment = ''
+        },
+
+        // タスク削除
+        doRemove: function (item) {
+            let index = this.todos.indexOf(item)
+            this.todos.splice(index, 1)
         },
     },
 
